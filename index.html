@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>World Cup 2026 Bracket</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>World Cup 2026</h1>
+<h2>Knockout Bracket Picker</h2>
+
+<div class="user-box">
+  <input id="playerName" placeholder="Enter your name">
+  <button onclick="saveBracket()">Save Picks</button>
+  <button onclick="resetBracket()">Reset</button>
+</div>
+
+<div class="bracket">
+
+  <div class="round">
+    <h3>Round of 16</h3>
+
+    <div class="game">
+      <button onclick="pickWinner('qf1','Paraguay')">Paraguay</button>
+      <button onclick="pickWinner('qf1','France')">France</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('qf1','Canada')">Canada</button>
+      <button onclick="pickWinner('qf1','Morocco')">Morocco</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('qf2','Portugal')">Portugal</button>
+      <button onclick="pickWinner('qf2','Spain')">Spain</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('qf2','United States')">United States</button>
+      <button onclick="pickWinner('qf2','Belgium')">Belgium</button>
+    </div>
+  </div>
+
+  <div class="round">
+    <h3>Quarterfinals</h3>
+
+    <div class="game">
+      <button id="qf1a" onclick="pickWinner('sf1',this.innerText)"></button>
+      <button id="qf1b" onclick="pickWinner('sf1',this.innerText)"></button>
+    </div>
+
+    <div class="game">
+      <button id="qf2a" onclick="pickWinner('sf1',this.innerText)"></button>
+      <button id="qf2b" onclick="pickWinner('sf1',this.innerText)"></button>
+    </div>
+  </div>
+
+  <div class="round">
+    <h3>Semifinals</h3>
+
+    <div class="game">
+      <button id="sf1a" onclick="pickWinner('final',this.innerText)"></button>
+      <button id="sf1b" onclick="pickWinner('final',this.innerText)"></button>
+    </div>
+  </div>
+
+  <div class="round final">
+    <h3>Champion</h3>
+    <div id="champion">?</div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
