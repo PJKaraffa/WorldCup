@@ -1,133 +1,207 @@
+// ============================================
+// WORLD CUP BRACKET
+// ============================================
+
 let picks = {
-  qf1: [],
-  qf2: [],
-  sf1: [],
-  final: []
+    qf1: [],
+    qf2: [],
+    sf1: [],
+    final: []
 };
+
+// ============================================
+// PICK WINNER
+// ============================================
 
 function pickWinner(round, team) {
-  if (!team) return;
 
-  picks[round].push(team);
+    if (!team) return;
 
-  if (round === "qf1") {
-    if (picks.qf1.length === 1) {
-      document.getElementById("qf1a").innerText = team;
-    } else if (picks.qf1.length === 2) {
-      document.getElementById("qf1b").innerText = team;
+    picks[round].push(team);
+
+    switch (round) {
+
+        case "qf1":
+
+            if (picks.qf1.length === 1)
+                document.getElementById("qf1a").innerText = team;
+            else if (picks.qf1.length === 2)
+                document.getElementById("qf1b").innerText = team;
+
+            break;
+
+        case "qf2":
+
+            if (picks.qf2.length === 1)
+                document.getElementById("qf2a").innerText = team;
+            else if (picks.qf2.length === 2)
+                document.getElementById("qf2b").innerText = team;
+
+            break;
+
+        case "sf1":
+
+            if (picks.sf1.length === 1)
+                document.getElementById("sf1a").innerText = team;
+            else if (picks.sf1.length === 2)
+                document.getElementById("sf1b").innerText = team;
+
+            break;
+
+        case "final":
+
+            document.getElementById("champion").innerText = team;
+            picks.final = [team];
+
+            break;
     }
-  }
-
-  if (round === "qf2") {
-    if (picks.qf2.length === 1) {
-      document.getElementById("qf2a").innerText = team;
-    } else if (picks.qf2.length === 2) {
-      document.getElementById("qf2b").innerText = team;
-    }
-  }
-
-  if (round === "sf1") {
-    if (picks.sf1.length === 1) {
-      document.getElementById("sf1a").innerText = team;
-    } else if (picks.sf1.length === 2) {
-      document.getElementById("sf1b").innerText = team;
-    }
-  }
-
-  if (round === "final") {
-    document.getElementById("champion").innerText = team;
-    picks.final = [team];
-  }
 }
+
+// ============================================
+// SAVE BRACKET
+// ============================================
 
 async function saveBracket() {
-  const name = document.getElementById("playerName").value.trim();
 
-  if (name === "") {
-    alert("Please enter your name.");
-    return;
-  }
+    const playerName = document.getElementById("playerName").value.trim();
 
-  const { data: userData } = await supabaseClient.auth.getUser();
+    if (playerName === "") {
+        alert("Please enter your name.");
+        return;
+    }
 
-  if (!userData.user) {
-    alert("Please login first.");
-    return;
-  }
+    const { data: userData } = await supabaseClient.auth.getUser();
 
-  const champion = document.getElementById("champion").innerText;
+    if (!userData.user) {
+        alert("Please login first.");
+        return;
+    }
 
-  const { error } = await supabaseClient
-    .from("bracket_picks")
-    .insert({
-      user_id: userData.user.id,
-      player_name: name,
-      picks: picks,
-      champion: champion
-    });
+    const champion = document.getElementById("champion").innerText;
 
-  if (error) {
-    alert(error.message);
-  } else {
-    alert("Bracket saved to Supabase!");
-  }
-};
+    const { error } = await supabaseClient
+        .from("bracket_picks")
+        .insert({
+            user_id: userData.user.id,
+            player_name: playerName,
+            picks: picks,
+            champion: champion
+        });
 
-  localStorage.setItem("worldCupBracket", JSON.stringify(bracketData));
-  alert("Bracket saved!");
+    if (error) {
+        alert(error.message);
+        return;
+    }
+
+    // Save locally too
+    localStorage.setItem("worldCupBracket", JSON.stringify({
+        name: playerName,
+        picks: picks
+    }));
+
+    alert("Bracket saved successfully!");
 }
+
+// ============================================
+// RESET
+// ============================================
 
 function resetBracket() {
-  localStorage.removeItem("worldCupBracket");
-  location.reload();
+
+    if (!confirm("Reset your bracket?"))
+        return;
+
+    localStorage.removeItem("worldCupBracket");
+
+    location.reload();
 }
+
+// ============================================
+// SIGN UP
+// ============================================
+
 async function signUp() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
 
-  const { error } = await supabaseClient.auth.signUp({
-    email,
-    password
-  });
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-  document.getElementById("loginMessage").innerText =
-    error ? error.message : "Signup successful. Check your email if confirmation is on.";
+    const { error } = await supabaseClient.auth.signUp({
+        email,
+        password
+    });
+
+    if (error)
+        document.getElementById("loginMessage").innerText = error.message;
+    else
+        document.getElementById("loginMessage").innerText =
+            "Account created! Check your email if confirmation is enabled.";
 }
+
+// ============================================
+// LOGIN
+// ============================================
 
 async function login() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-  document.getElementById("loginMessage").innerText =
-    error ? error.message : "Logged in!";
+    const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    if (error)
+        document.getElementById("loginMessage").innerText = error.message;
+    else
+        document.getElementById("loginMessage").innerText = "Logged in successfully!";
 }
+
+// ============================================
+// LOGOUT
+// ============================================
 
 async function logout() {
-  await supabaseClient.auth.signOut();
-  document.getElementById("loginMessage").innerText = "Logged out.";
-}
-window.onload = function () {
-  const saved = localStorage.getItem("worldCupBracket");
 
-  if (saved) {
+    await supabaseClient.auth.signOut();
+
+    document.getElementById("loginMessage").innerText = "Logged out.";
+}
+
+// ============================================
+// LOAD SAVED BRACKET
+// ============================================
+
+window.onload = function () {
+
+    const saved = localStorage.getItem("worldCupBracket");
+
+    if (!saved) return;
+
     const data = JSON.parse(saved);
+
     document.getElementById("playerName").value = data.name;
+
     picks = data.picks;
 
-    if (picks.qf1[0]) document.getElementById("qf1a").innerText = picks.qf1[0];
-    if (picks.qf1[1]) document.getElementById("qf1b").innerText = picks.qf1[1];
+    if (picks.qf1[0])
+        document.getElementById("qf1a").innerText = picks.qf1[0];
 
-    if (picks.qf2[0]) document.getElementById("qf2a").innerText = picks.qf2[0];
-    if (picks.qf2[1]) document.getElementById("qf2b").innerText = picks.qf2[1];
+    if (picks.qf1[1])
+        document.getElementById("qf1b").innerText = picks.qf1[1];
 
-    if (picks.sf1[0]) document.getElementById("sf1a").innerText = picks.sf1[0];
-    if (picks.sf1[1]) document.getElementById("sf1b").innerText = picks.sf1[1];
+    if (picks.qf2[0])
+        document.getElementById("qf2a").innerText = picks.qf2[0];
 
-    if (picks.final[0]) document.getElementById("champion").innerText = picks.final[0];
-  }
+    if (picks.qf2[1])
+        document.getElementById("qf2b").innerText = picks.qf2[1];
+
+    if (picks.sf1[0])
+        document.getElementById("sf1a").innerText = picks.sf1[0];
+
+    if (picks.sf1[1])
+        document.getElementById("sf1b").innerText = picks.sf1[1];
+
+    if (picks.final[0])
+        document.getElementById("champion").innerText = picks.final[0];
 };
