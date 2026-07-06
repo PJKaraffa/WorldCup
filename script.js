@@ -162,11 +162,40 @@ async function login() {
 // ============================================
 
 async function logout() {
-
-    await supabaseClient.auth.signOut();
-
-    document.getElementById("loginMessage").innerText = "Logged out.";
+  await supabaseClient.auth.signOut();
+  window.location.href = "login.html";
 }
+
+async function checkLogin() {
+  const { data } = await supabaseClient.auth.getUser();
+
+  if (!data.user) {
+    window.location.href = "login.html";
+  }
+}
+
+window.onload = function () {
+  checkLogin();
+
+  const saved = localStorage.getItem("worldCupBracket");
+
+  if (!saved) return;
+
+  const data = JSON.parse(saved);
+  document.getElementById("playerName").value = data.name;
+  picks = data.picks;
+
+  if (picks.qf1[0]) document.getElementById("qf1a").innerText = picks.qf1[0];
+  if (picks.qf1[1]) document.getElementById("qf1b").innerText = picks.qf1[1];
+
+  if (picks.qf2[0]) document.getElementById("qf2a").innerText = picks.qf2[0];
+  if (picks.qf2[1]) document.getElementById("qf2b").innerText = picks.qf2[1];
+
+  if (picks.sf1[0]) document.getElementById("sf1a").innerText = picks.sf1[0];
+  if (picks.sf1[1]) document.getElementById("sf1b").innerText = picks.sf1[1];
+
+  if (picks.final[0]) document.getElementById("champion").innerText = picks.final[0];
+};
 
 // ============================================
 // LOAD SAVED BRACKET
