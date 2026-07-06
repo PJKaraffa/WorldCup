@@ -40,7 +40,7 @@ function pickWinner(round, team) {
   }
 }
 
-function saveBracket() {
+async function saveBracket() {
   const name = document.getElementById("playerName").value.trim();
 
   if (name === "") {
@@ -48,10 +48,30 @@ function saveBracket() {
     return;
   }
 
-  const bracketData = {
-    name: name,
-    picks: picks
-  };
+  const { data: userData } = await supabaseClient.auth.getUser();
+
+  if (!userData.user) {
+    alert("Please login first.");
+    return;
+  }
+
+  const champion = document.getElementById("champion").innerText;
+
+  const { error } = await supabaseClient
+    .from("bracket_picks")
+    .insert({
+      user_id: userData.user.id,
+      player_name: name,
+      picks: picks,
+      champion: champion
+    });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Bracket saved to Supabase!");
+  }
+};
 
   localStorage.setItem("worldCupBracket", JSON.stringify(bracketData));
   alert("Bracket saved!");
@@ -61,7 +81,36 @@ function resetBracket() {
   localStorage.removeItem("worldCupBracket");
   location.reload();
 }
+async function signUp() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
+  const { error } = await supabaseClient.auth.signUp({
+    email,
+    password
+  });
+
+  document.getElementById("loginMessage").innerText =
+    error ? error.message : "Signup successful. Check your email if confirmation is on.";
+}
+
+async function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  document.getElementById("loginMessage").innerText =
+    error ? error.message : "Logged in!";
+}
+
+async function logout() {
+  await supabaseClient.auth.signOut();
+  document.getElementById("loginMessage").innerText = "Logged out.";
+}
 window.onload = function () {
   const saved = localStorage.getItem("worldCupBracket");
 
