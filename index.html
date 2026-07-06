@@ -9,13 +9,14 @@
 <h1>World Cup 2026</h1>
 <h2>Knockout Bracket Picker</h2>
 
-<button onclick="logout()">Logout</button>
-<p id="loginMessage"></p>
-
 <div class="user-box">
+  <p id="welcomeMessage"></p>
+
   <input id="playerName" placeholder="Enter your name">
+
   <button onclick="saveBracket()">Save Picks</button>
   <button onclick="resetBracket()">Reset</button>
+  <button onclick="logout()">Logout</button>
 </div>
 
 <div class="bracket">
@@ -48,13 +49,13 @@
     <h3>Quarterfinals</h3>
 
     <div class="game">
-      <button id="qf1a" onclick="pickWinner('sf1',this.innerText)"></button>
-      <button id="qf1b" onclick="pickWinner('sf1',this.innerText)"></button>
+      <button id="qf1a" onclick="pickWinner('sf1', this.innerText)"></button>
+      <button id="qf1b" onclick="pickWinner('sf1', this.innerText)"></button>
     </div>
 
     <div class="game">
-      <button id="qf2a" onclick="pickWinner('sf1',this.innerText)"></button>
-      <button id="qf2b" onclick="pickWinner('sf1',this.innerText)"></button>
+      <button id="qf2a" onclick="pickWinner('sf1', this.innerText)"></button>
+      <button id="qf2b" onclick="pickWinner('sf1', this.innerText)"></button>
     </div>
   </div>
 
@@ -62,8 +63,8 @@
     <h3>Semifinals</h3>
 
     <div class="game">
-      <button id="sf1a" onclick="pickWinner('final',this.innerText)"></button>
-      <button id="sf1b" onclick="pickWinner('final',this.innerText)"></button>
+      <button id="sf1a" onclick="pickWinner('final', this.innerText)"></button>
+      <button id="sf1b" onclick="pickWinner('final', this.innerText)"></button>
     </div>
   </div>
 
@@ -72,10 +73,58 @@
     <div id="champion">?</div>
   </div>
 
+  <div class="round">
+    <h3>Semifinals</h3>
+
+    <div class="game">
+      <button id="sf2a" onclick="pickWinner('final', this.innerText)"></button>
+      <button id="sf2b" onclick="pickWinner('final', this.innerText)"></button>
+    </div>
+  </div>
+
+  <div class="round">
+    <h3>Quarterfinals</h3>
+
+    <div class="game">
+      <button id="qf3a" onclick="pickWinner('sf2', this.innerText)"></button>
+      <button id="qf3b" onclick="pickWinner('sf2', this.innerText)"></button>
+    </div>
+
+    <div class="game">
+      <button id="qf4a" onclick="pickWinner('sf2', this.innerText)"></button>
+      <button id="qf4b" onclick="pickWinner('sf2', this.innerText)"></button>
+    </div>
+  </div>
+
+  <div class="round">
+    <h3>Round of 16</h3>
+
+    <div class="game">
+      <button onclick="pickWinner('qf3','Brazil')">Brazil</button>
+      <button onclick="pickWinner('qf3','Norway')">Norway</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('qf3','Mexico')">Mexico</button>
+      <button onclick="pickWinner('qf3','England')">England</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('qf4','Argentina')">Argentina</button>
+      <button onclick="pickWinner('qf4','Egypt')">Egypt</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('qf4','Switzerland')">Switzerland</button>
+      <button onclick="pickWinner('qf4','Colombia')">Colombia</button>
+    </div>
+  </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script src="script.js"></script>
+
 </body>
 </html>
