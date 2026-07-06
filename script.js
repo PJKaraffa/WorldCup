@@ -57,16 +57,16 @@ function pickWinner(round, team) {
     if (picks.sf2.length === 1) document.getElementById("sf2a").innerText = team;
     if (picks.sf2.length === 2) document.getElementById("sf2b").innerText = team;
   }
-if (round === "final") {
-  if (picks.final.length === 1) document.getElementById("finala").innerText = team;
-  if (picks.final.length === 2) document.getElementById("finalb").innerText = team;
-}
 
-if (round === "champion") {
-  document.getElementById("champion").innerText = team;
-  picks.champion = [team];
-}
+  if (round === "final") {
+    if (picks.final.length === 1) document.getElementById("finala").innerText = team;
+    if (picks.final.length === 2) document.getElementById("finalb").innerText = team;
+  }
 
+  if (round === "champion") {
+    document.getElementById("champion").innerText = team;
+    picks.champion = [team];
+  }
 }
 
 async function saveBracket() {
@@ -122,7 +122,18 @@ function loadSavedBracket() {
   if (!saved) return;
 
   const data = JSON.parse(saved);
-  picks = data.picks;
+
+  picks = {
+    qf1: [],
+    qf2: [],
+    qf3: [],
+    qf4: [],
+    sf1: [],
+    sf2: [],
+    final: [],
+    champion: [],
+    ...data.picks
+  };
 
   if (picks.qf1[0]) document.getElementById("qf1a").innerText = picks.qf1[0];
   if (picks.qf1[1]) document.getElementById("qf1b").innerText = picks.qf1[1];
@@ -142,11 +153,10 @@ function loadSavedBracket() {
   if (picks.sf2[0]) document.getElementById("sf2a").innerText = picks.sf2[0];
   if (picks.sf2[1]) document.getElementById("sf2b").innerText = picks.sf2[1];
 
-if (picks.final[0]) document.getElementById("finala").innerText = picks.final[0];
-if (picks.final[1]) document.getElementById("finalb").innerText = picks.final[1];
+  if (picks.final[0]) document.getElementById("finala").innerText = picks.final[0];
+  if (picks.final[1]) document.getElementById("finalb").innerText = picks.final[1];
 
-if (picks.champion && picks.champion[0])
-  document.getElementById("champion").innerText = picks.champion[0];
+  if (picks.champion[0]) document.getElementById("champion").innerText = picks.champion[0];
 }
 
 window.onload = async function () {
