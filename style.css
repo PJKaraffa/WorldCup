@@ -1,90 +1,238 @@
-body {
-  margin: 0;
-  padding: 30px;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
-  text-align: center;
+/* ==========================================
+   GENERAL
+========================================== */
+
+*{
+    box-sizing:border-box;
 }
 
-h1 {
-  font-size: 48px;
-  margin-bottom: 5px;
+body{
+    margin:0;
+    padding:30px;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#0f172a;
+    color:white;
+    text-align:center;
 }
 
-h2 {
-  margin-top: 0;
-  color: #38bdf8;
+h1{
+    margin:0;
+    font-size:56px;
+    font-weight:bold;
 }
 
-.user-box {
-  margin: 25px auto;
+h2{
+    margin-top:5px;
+    color:#38bdf8;
 }
 
-input {
-  padding: 12px;
-  width: 240px;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
+button{
+    cursor:pointer;
 }
 
-button {
-  padding: 10px 15px;
-  margin: 5px;
-  border: none;
-  border-radius: 8px;
-  background: #38bdf8;
-  color: #020617;
-  font-weight: bold;
-  cursor: pointer;
+/* ==========================================
+   USER BAR
+========================================== */
+
+.user-box{
+    margin:25px auto 40px;
 }
 
-button:hover {
-  background: #7dd3fc;
+.user-box input{
+    width:260px;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    margin-right:8px;
 }
 
-.bracket {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  align-items: center;
-  margin-top: 30px;
-  flex-wrap: wrap;
+.user-box button{
+    padding:12px 20px;
+    margin:4px;
+    border:none;
+    border-radius:8px;
+    background:#38bdf8;
+    color:#00111f;
+    font-weight:bold;
+    font-size:15px;
 }
 
-.round {
-  background: #111827;
-  padding: 20px;
-  border-radius: 15px;
-  min-width: 220px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+.user-box button:hover{
+    background:#7dd3fc;
 }
 
-.round h3 {
-  color: #facc15;
+#welcomeMessage{
+    color:#38bdf8;
+    margin-bottom:12px;
+    font-size:18px;
 }
 
-.game {
-  background: #1e293b;
-  padding: 12px;
-  margin: 20px 0;
-  border-radius: 10px;
+/* ==========================================
+   BRACKET
+========================================== */
+
+.bracket{
+
+    display:grid;
+
+    grid-template-columns:
+        250px
+        250px
+        250px
+        250px
+        250px
+        250px
+        250px;
+
+    gap:30px;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:1850px;
+
+    margin:auto;
+
+    padding:30px;
+
+    overflow-x:auto;
+
 }
 
-.game button {
-  display: block;
-  width: 100%;
-  margin: 8px 0;
+/* ==========================================
+   ROUND
+========================================== */
+
+.round{
+
+    background:#111827;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.40);
+
 }
 
-.final {
-  background: #164e63;
+.round h3{
+
+    color:#ffd400;
+
+    margin-top:5px;
+
+    margin-bottom:20px;
+
+    font-size:20px;
+
 }
 
-#champion {
-  font-size: 30px;
-  font-weight: bold;
-  color: #facc15;
-  margin-top: 20px;
+/* ==========================================
+   GAMES
+========================================== */
+
+.game{
+
+    background:#1e293b;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    margin-bottom:18px;
+
+}
+
+.game button{
+
+    width:100%;
+
+    margin:5px 0;
+
+    padding:10px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#40ace0;
+
+    color:black;
+
+    font-weight:bold;
+
+    transition:.2s;
+
+}
+
+.game button:hover{
+
+    background:#66d0ff;
+
+    transform:scale(1.03);
+
+}
+
+/* ==========================================
+   CHAMPION
+========================================== */
+
+.final{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#155e75;
+
+    min-height:250px;
+
+}
+
+.final h3{
+
+    color:#ffd400;
+
+}
+
+#champion{
+
+    margin-top:25px;
+
+    font-size:42px;
+
+    font-weight:bold;
+
+    color:#ffd400;
+
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+    height:12px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#0f172a;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#38bdf8;
+
+    border-radius:10px;
+
 }
