@@ -1,7 +1,10 @@
 let picks = {
   qf1: [],
   qf2: [],
+  qf3: [],
+  qf4: [],
   sf1: [],
+  sf2: [],
   final: []
 };
 
@@ -34,9 +37,24 @@ function pickWinner(round, team) {
     if (picks.qf2.length === 2) document.getElementById("qf2b").innerText = team;
   }
 
+  if (round === "qf3") {
+    if (picks.qf3.length === 1) document.getElementById("qf3a").innerText = team;
+    if (picks.qf3.length === 2) document.getElementById("qf3b").innerText = team;
+  }
+
+  if (round === "qf4") {
+    if (picks.qf4.length === 1) document.getElementById("qf4a").innerText = team;
+    if (picks.qf4.length === 2) document.getElementById("qf4b").innerText = team;
+  }
+
   if (round === "sf1") {
     if (picks.sf1.length === 1) document.getElementById("sf1a").innerText = team;
     if (picks.sf1.length === 2) document.getElementById("sf1b").innerText = team;
+  }
+
+  if (round === "sf2") {
+    if (picks.sf2.length === 1) document.getElementById("sf2a").innerText = team;
+    if (picks.sf2.length === 2) document.getElementById("sf2b").innerText = team;
   }
 
   if (round === "final") {
@@ -92,15 +110,12 @@ async function logout() {
   window.location.href = "login.html";
 }
 
-window.onload = async function () {
-  await checkLogin();
-
+function loadSavedBracket() {
   const saved = localStorage.getItem("worldCupBracket");
 
   if (!saved) return;
 
   const data = JSON.parse(saved);
-
   picks = data.picks;
 
   if (picks.qf1[0]) document.getElementById("qf1a").innerText = picks.qf1[0];
@@ -109,8 +124,22 @@ window.onload = async function () {
   if (picks.qf2[0]) document.getElementById("qf2a").innerText = picks.qf2[0];
   if (picks.qf2[1]) document.getElementById("qf2b").innerText = picks.qf2[1];
 
+  if (picks.qf3[0]) document.getElementById("qf3a").innerText = picks.qf3[0];
+  if (picks.qf3[1]) document.getElementById("qf3b").innerText = picks.qf3[1];
+
+  if (picks.qf4[0]) document.getElementById("qf4a").innerText = picks.qf4[0];
+  if (picks.qf4[1]) document.getElementById("qf4b").innerText = picks.qf4[1];
+
   if (picks.sf1[0]) document.getElementById("sf1a").innerText = picks.sf1[0];
   if (picks.sf1[1]) document.getElementById("sf1b").innerText = picks.sf1[1];
 
+  if (picks.sf2[0]) document.getElementById("sf2a").innerText = picks.sf2[0];
+  if (picks.sf2[1]) document.getElementById("sf2b").innerText = picks.sf2[1];
+
   if (picks.final[0]) document.getElementById("champion").innerText = picks.final[0];
+}
+
+window.onload = async function () {
+  await checkLogin();
+  loadSavedBracket();
 };
