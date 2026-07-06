@@ -205,3 +205,12 @@ window.onload = function () {
     if (picks.final[0])
         document.getElementById("champion").innerText = picks.final[0];
 };
+async function checkLogin() {
+  const { data } = await supabaseClient.auth.getUser();
+
+  if (!data.user) {
+    window.location.href = "login.html";
+  }
+}
+
+checkLogin();
