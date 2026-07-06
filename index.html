@@ -9,6 +9,15 @@
 <h1>World Cup 2026</h1>
 <h2>Knockout Bracket Picker</h2>
 
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="signUp()">Sign Up</button>
+<button onclick="login()">Login</button>
+<button onclick="logout()">Logout</button>
+
+<p id="loginMessage"></p>
+
 <div class="user-box">
   <input id="playerName" placeholder="Enter your name">
   <button onclick="saveBracket()">Save Picks</button>
@@ -71,6 +80,8 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
