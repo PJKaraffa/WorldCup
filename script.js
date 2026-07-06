@@ -23,49 +23,34 @@ async function checkLogin() {
   document.getElementById("playerName").value = data.user.email;
 }
 
+function addWinner(round, team, spot1, spot2) {
+  if (!team) return;
+
+  if (picks[round].length === 0) {
+    picks[round][0] = team;
+    document.getElementById(spot1).innerText = team;
+  } else {
+    picks[round][1] = team;
+    document.getElementById(spot2).innerText = team;
+  }
+}
+
 function pickWinner(round, team) {
   if (!team) return;
 
-  picks[round].push(team);
+  if (round === "qf1") addWinner("qf1", team, "qf1a", "qf1b");
+  if (round === "qf2") addWinner("qf2", team, "qf2a", "qf2b");
+  if (round === "qf3") addWinner("qf3", team, "qf3a", "qf3b");
+  if (round === "qf4") addWinner("qf4", team, "qf4a", "qf4b");
 
-  if (round === "qf1") {
-    if (picks.qf1.length === 1) document.getElementById("qf1a").innerText = team;
-    if (picks.qf1.length === 2) document.getElementById("qf1b").innerText = team;
-  }
+  if (round === "sf1") addWinner("sf1", team, "sf1a", "sf1b");
+  if (round === "sf2") addWinner("sf2", team, "sf2a", "sf2b");
 
-  if (round === "qf2") {
-    if (picks.qf2.length === 1) document.getElementById("qf2a").innerText = team;
-    if (picks.qf2.length === 2) document.getElementById("qf2b").innerText = team;
-  }
-
-  if (round === "qf3") {
-    if (picks.qf3.length === 1) document.getElementById("qf3a").innerText = team;
-    if (picks.qf3.length === 2) document.getElementById("qf3b").innerText = team;
-  }
-
-  if (round === "qf4") {
-    if (picks.qf4.length === 1) document.getElementById("qf4a").innerText = team;
-    if (picks.qf4.length === 2) document.getElementById("qf4b").innerText = team;
-  }
-
-  if (round === "sf1") {
-    if (picks.sf1.length === 1) document.getElementById("sf1a").innerText = team;
-    if (picks.sf1.length === 2) document.getElementById("sf1b").innerText = team;
-  }
-
-  if (round === "sf2") {
-    if (picks.sf2.length === 1) document.getElementById("sf2a").innerText = team;
-    if (picks.sf2.length === 2) document.getElementById("sf2b").innerText = team;
-  }
-
-  if (round === "final") {
-    if (picks.final.length === 1) document.getElementById("finala").innerText = team;
-    if (picks.final.length === 2) document.getElementById("finalb").innerText = team;
-  }
+  if (round === "final") addWinner("final", team, "finala", "finalb");
 
   if (round === "champion") {
-    document.getElementById("champion").innerText = team;
     picks.champion = [team];
+    document.getElementById("champion").innerText = team;
   }
 }
 
@@ -79,7 +64,7 @@ async function saveBracket() {
     return;
   }
 
-  const champion = document.getElementById("champion").innerText;
+  const champion = picks.champion[0] || "";
 
   const { error } = await supabaseClient
     .from("bracket_picks")
