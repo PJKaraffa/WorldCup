@@ -8,7 +8,7 @@ async function signUp() {
   });
 
   document.getElementById("loginMessage").innerText =
-    error ? error.message : "Account created. Check your email.";
+    error ? error.message : "Account created. Now login.";
 }
 
 async function login() {
