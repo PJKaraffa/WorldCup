@@ -7,132 +7,139 @@
 
 <body>
 
-  <h1>World Cup 2026</h1>
-  <h2>Knockout Bracket Picker</h2>
-<h2 style="color:red;">TEST VERSION 2</h2>
-  <div class="user-box">
-    <p id="welcomeMessage"></p>
+<h1>World Cup 2026</h1>
+<h2>Knockout Bracket Picker</h2>
 
-    <input id="playerName" placeholder="Enter your name">
+<div class="user-box">
+  <p id="welcomeMessage"></p>
 
-    <button onclick="saveBracket()">Save Picks</button>
-    <button onclick="resetBracket()">Reset</button>
-    <button onclick="logout()">Logout</button>
+  <input id="playerName" placeholder="Enter your name">
+
+  <button onclick="saveBracket()">Save Picks</button>
+  <button onclick="resetBracket()">Reset</button>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<div class="bracket">
+
+  <!-- LEFT ROUND OF 16 -->
+  <div class="round">
+    <h3>Round of 16</h3>
+
+    <div class="game">
+      <button onclick="pickWinner('r16_1','Paraguay')">Paraguay</button>
+      <button onclick="pickWinner('r16_1','France')">France</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('r16_2','Canada')">Canada</button>
+      <button onclick="pickWinner('r16_2','Morocco')">Morocco</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('r16_3','Portugal')">Portugal</button>
+      <button onclick="pickWinner('r16_3','Spain')">Spain</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('r16_4','United States')">United States</button>
+      <button onclick="pickWinner('r16_4','Belgium')">Belgium</button>
+    </div>
   </div>
 
-  <div class="bracket">
+  <!-- LEFT QUARTERFINALS -->
+  <div class="round">
+    <h3>Quarterfinals</h3>
 
-    <div class="round">
-      <h3>Round of 16</h3>
-
-      <div class="game">
-        <button onclick="pickWinner('qf1','Paraguay')">Paraguay</button>
-        <button onclick="pickWinner('qf1','France')">France</button>
-      </div>
-
-      <div class="game">
-        <button onclick="pickWinner('qf1','Canada')">Canada</button>
-        <button onclick="pickWinner('qf1','Morocco')">Morocco</button>
-      </div>
-
-      <div class="game">
-        <button onclick="pickWinner('qf2','Portugal')">Portugal</button>
-        <button onclick="pickWinner('qf2','Spain')">Spain</button>
-      </div>
-
-      <div class="game">
-        <button onclick="pickWinner('qf2','United States')">United States</button>
-        <button onclick="pickWinner('qf2','Belgium')">Belgium</button>
-      </div>
+    <div class="game">
+      <button id="qf1_team1" onclick="pickWinner('qf1', this.innerText)"></button>
+      <button id="qf1_team2" onclick="pickWinner('qf1', this.innerText)"></button>
     </div>
 
-    <div class="round">
-      <h3>Quarterfinals</h3>
-
-      <div class="game">
-        <button id="qf1a" onclick="pickWinner('sf1', this.innerText)"></button>
-        <button id="qf1b" onclick="pickWinner('sf1', this.innerText)"></button>
-      </div>
-
-      <div class="game">
-        <button id="qf2a" onclick="pickWinner('sf1', this.innerText)"></button>
-        <button id="qf2b" onclick="pickWinner('sf1', this.innerText)"></button>
-      </div>
+    <div class="game">
+      <button id="qf2_team1" onclick="pickWinner('qf2', this.innerText)"></button>
+      <button id="qf2_team2" onclick="pickWinner('qf2', this.innerText)"></button>
     </div>
-
-    <div class="round">
-      <h3>Semifinals</h3>
-
-      <div class="game">
-        <button id="sf1a" onclick="pickWinner('final', this.innerText)"></button>
-        <button id="sf1b" onclick="pickWinner('final', this.innerText)"></button>
-      </div>
-    </div>
-
-    <div class="round final">
-      <h3>Final</h3>
-
-      <div class="game final-game">
-        <button id="finala" onclick="pickWinner('champion', this.innerText)"></button>
-        <button id="finalb" onclick="pickWinner('champion', this.innerText)"></button>
-      </div>
-
-      <h3>Champion</h3>
-      <div id="champion">?</div>
-    </div>
-
-    <div class="round">
-      <h3>Semifinals</h3>
-
-      <div class="game">
-        <button id="sf2a" onclick="pickWinner('final', this.innerText)"></button>
-        <button id="sf2b" onclick="pickWinner('final', this.innerText)"></button>
-      </div>
-    </div>
-
-    <div class="round">
-      <h3>Quarterfinals</h3>
-
-      <div class="game">
-        <button id="qf3a" onclick="pickWinner('sf2', this.innerText)"></button>
-        <button id="qf3b" onclick="pickWinner('sf2', this.innerText)"></button>
-      </div>
-
-      <div class="game">
-        <button id="qf4a" onclick="pickWinner('sf2', this.innerText)"></button>
-        <button id="qf4b" onclick="pickWinner('sf2', this.innerText)"></button>
-      </div>
-    </div>
-
-    <div class="round">
-      <h3>Round of 16</h3>
-
-      <div class="game">
-        <button onclick="pickWinner('qf3','Brazil')">Brazil</button>
-        <button onclick="pickWinner('qf3','Norway')">Norway</button>
-      </div>
-
-      <div class="game">
-        <button onclick="pickWinner('qf3','Mexico')">Mexico</button>
-        <button onclick="pickWinner('qf3','England')">England</button>
-      </div>
-
-      <div class="game">
-        <button onclick="pickWinner('qf4','Argentina')">Argentina</button>
-        <button onclick="pickWinner('qf4','Egypt')">Egypt</button>
-      </div>
-
-      <div class="game">
-        <button onclick="pickWinner('qf4','Switzerland')">Switzerland</button>
-        <button onclick="pickWinner('qf4','Colombia')">Colombia</button>
-      </div>
-    </div>
-
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="script.js"></script>
+  <!-- LEFT SEMIFINAL -->
+  <div class="round">
+    <h3>Semifinals</h3>
+
+    <div class="game">
+      <button id="sf1_team1" onclick="pickWinner('sf1', this.innerText)"></button>
+      <button id="sf1_team2" onclick="pickWinner('sf1', this.innerText)"></button>
+    </div>
+  </div>
+
+  <!-- FINAL / CHAMPION -->
+  <div class="round final">
+    <h3>Final</h3>
+
+    <div class="game final-game">
+      <button id="final_team1" onclick="pickWinner('final', this.innerText)"></button>
+      <button id="final_team2" onclick="pickWinner('final', this.innerText)"></button>
+    </div>
+
+    <h3>Champion</h3>
+    <div id="champion">?</div>
+  </div>
+
+  <!-- RIGHT SEMIFINAL -->
+  <div class="round">
+    <h3>Semifinals</h3>
+
+    <div class="game">
+      <button id="sf2_team1" onclick="pickWinner('sf2', this.innerText)"></button>
+      <button id="sf2_team2" onclick="pickWinner('sf2', this.innerText)"></button>
+    </div>
+  </div>
+
+  <!-- RIGHT QUARTERFINALS -->
+  <div class="round">
+    <h3>Quarterfinals</h3>
+
+    <div class="game">
+      <button id="qf3_team1" onclick="pickWinner('qf3', this.innerText)"></button>
+      <button id="qf3_team2" onclick="pickWinner('qf3', this.innerText)"></button>
+    </div>
+
+    <div class="game">
+      <button id="qf4_team1" onclick="pickWinner('qf4', this.innerText)"></button>
+      <button id="qf4_team2" onclick="pickWinner('qf4', this.innerText)"></button>
+    </div>
+  </div>
+
+  <!-- RIGHT ROUND OF 16 -->
+  <div class="round">
+    <h3>Round of 16</h3>
+
+    <div class="game">
+      <button onclick="pickWinner('r16_5','Brazil')">Brazil</button>
+      <button onclick="pickWinner('r16_5','Norway')">Norway</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('r16_6','Mexico')">Mexico</button>
+      <button onclick="pickWinner('r16_6','England')">England</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('r16_7','Argentina')">Argentina</button>
+      <button onclick="pickWinner('r16_7','Egypt')">Egypt</button>
+    </div>
+
+    <div class="game">
+      <button onclick="pickWinner('r16_8','Switzerland')">Switzerland</button>
+      <button onclick="pickWinner('r16_8','Colombia')">Colombia</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
