@@ -1,12 +1,26 @@
-let picks = {
-  qf1: [],
-  qf2: [],
-  qf3: [],
-  qf4: [],
-  sf1: [],
-  sf2: [],
-  final: [],
-  champion: []
+let picks = {};
+
+const bracketFlow = {
+  r16_1: { next: "qf1", slot: 1 },
+  r16_2: { next: "qf1", slot: 2 },
+  r16_3: { next: "qf2", slot: 1 },
+  r16_4: { next: "qf2", slot: 2 },
+
+  r16_5: { next: "qf3", slot: 1 },
+  r16_6: { next: "qf3", slot: 2 },
+  r16_7: { next: "qf4", slot: 1 },
+  r16_8: { next: "qf4", slot: 2 },
+
+  qf1: { next: "sf1", slot: 1 },
+  qf2: { next: "sf1", slot: 2 },
+
+  qf3: { next: "sf2", slot: 1 },
+  qf4: { next: "sf2", slot: 2 },
+
+  sf1: { next: "final", slot: 1 },
+  sf2: { next: "final", slot: 2 },
+
+  final: { next: "champion", slot: 1 }
 };
 
 async function checkLogin() {
@@ -23,34 +37,71 @@ async function checkLogin() {
   document.getElementById("playerName").value = data.user.email;
 }
 
-function addWinner(round, team, spot1, spot2) {
+function pickWinner(matchId, team) {
   if (!team) return;
 
-  if (picks[round].length === 0) {
-    picks[round][0] = team;
-    document.getElementById(spot1).innerText = team;
-  } else {
-    picks[round][1] = team;
-    document.getElementById(spot2).innerText = team;
+  picks[matchId] = team;
+
+  const flow = bracketFlow[matchId];
+
+  if (!flow) return;
+
+  if (flow.next === "champion") {
+    document.getElementById("champion").innerText = team;
+    picks.champion = team;
+    return;
   }
+
+  const nextButton = document.getElementById(`${flow.next}_team${flow.slot}`);
+
+  if (nextButton) {
+    nextButton.innerText = team;
+  }
+
+  clearDownstream(flow.next);
 }
 
-function pickWinner(round, team) {
-  if (!team) return;
+function clearDownstream(matchId) {
+  const flow = bracketFlow[matchId];
 
-  if (round === "qf1") addWinner("qf1", team, "qf1a", "qf1b");
-  if (round === "qf2") addWinner("qf2", team, "qf2a", "qf2b");
-  if (round === "qf3") addWinner("qf3", team, "qf3a", "qf3b");
-  if (round === "qf4") addWinner("qf4", team, "qf4a", "qf4b");
+  if (!flow) return;
 
-  if (round === "sf1") addWinner("sf1", team, "sf1a", "sf1b");
-  if (round === "sf2") addWinner("sf2", team, "sf2a", "sf2b");
+  delete picks[matchId];
 
-  if (round === "final") addWinner("final", team, "finala", "finalb");
+  if (flow.next === "champion") {
+    document.getElementById("champion").innerText = "?";
+    delete picks.champion;
+    return;
+  }
 
-  if (round === "champion") {
-    picks.champion = [team];
-    document.getElementById("champion").innerText = team;
+  const btn1 = document.getElementById(`${flow.next}_team1`);
+  const btn2 = document.getElementById(`${flow.next}_team2`);
+
+  if (btn1) btn1.innerText = "";
+  if (btn2) btn2.innerText = "";
+
+  clearDownstream(flow.next);
+}
+
+function rebuildBracket() {
+  Object.keys(picks).forEach(matchId => {
+    if (matchId === "champion") return;
+
+    const team = picks[matchId];
+    const flow = bracketFlow[matchId];
+
+    if (!flow) return;
+
+    if (flow.next === "champion") {
+      document.getElementById("champion").innerText = team;
+    } else {
+      const nextButton = document.getElementById(`${flow.next}_team${flow.slot}`);
+      if (nextButton) nextButton.innerText = team;
+    }
+  });
+
+  if (picks.champion) {
+    document.getElementById("champion").innerText = picks.champion;
   }
 }
 
@@ -64,7 +115,7 @@ async function saveBracket() {
     return;
   }
 
-  const champion = picks.champion[0] || "";
+  const champion = picks.champion || "";
 
   const { error } = await supabaseClient
     .from("bracket_picks")
@@ -88,6 +139,18 @@ async function saveBracket() {
   alert("Bracket saved successfully!");
 }
 
+function loadSavedBracket() {
+  const saved = localStorage.getItem("worldCupBracket");
+
+  if (!saved) return;
+
+  const data = JSON.parse(saved);
+
+  picks = data.picks || {};
+
+  rebuildBracket();
+}
+
 function resetBracket() {
   if (!confirm("Reset your bracket?")) return;
 
@@ -99,49 +162,6 @@ async function logout() {
   await supabaseClient.auth.signOut();
   localStorage.removeItem("worldCupBracket");
   window.location.href = "login.html";
-}
-
-function loadSavedBracket() {
-  const saved = localStorage.getItem("worldCupBracket");
-
-  if (!saved) return;
-
-  const data = JSON.parse(saved);
-
-  picks = {
-    qf1: [],
-    qf2: [],
-    qf3: [],
-    qf4: [],
-    sf1: [],
-    sf2: [],
-    final: [],
-    champion: [],
-    ...data.picks
-  };
-
-  if (picks.qf1[0]) document.getElementById("qf1a").innerText = picks.qf1[0];
-  if (picks.qf1[1]) document.getElementById("qf1b").innerText = picks.qf1[1];
-
-  if (picks.qf2[0]) document.getElementById("qf2a").innerText = picks.qf2[0];
-  if (picks.qf2[1]) document.getElementById("qf2b").innerText = picks.qf2[1];
-
-  if (picks.qf3[0]) document.getElementById("qf3a").innerText = picks.qf3[0];
-  if (picks.qf3[1]) document.getElementById("qf3b").innerText = picks.qf3[1];
-
-  if (picks.qf4[0]) document.getElementById("qf4a").innerText = picks.qf4[0];
-  if (picks.qf4[1]) document.getElementById("qf4b").innerText = picks.qf4[1];
-
-  if (picks.sf1[0]) document.getElementById("sf1a").innerText = picks.sf1[0];
-  if (picks.sf1[1]) document.getElementById("sf1b").innerText = picks.sf1[1];
-
-  if (picks.sf2[0]) document.getElementById("sf2a").innerText = picks.sf2[0];
-  if (picks.sf2[1]) document.getElementById("sf2b").innerText = picks.sf2[1];
-
-  if (picks.final[0]) document.getElementById("finala").innerText = picks.final[0];
-  if (picks.final[1]) document.getElementById("finalb").innerText = picks.final[1];
-
-  if (picks.champion[0]) document.getElementById("champion").innerText = picks.champion[0];
 }
 
 window.onload = async function () {
